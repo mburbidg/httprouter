@@ -332,7 +332,8 @@ func (r *Router) allowed(path, reqMethod string) (allow string) {
 }
 
 // ServeHTTP makes the router implement the http.Handler interface.
-func (r *Router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+func (r *Router) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
+	w := NewLogResponseWriter(req.Method, req.URL.Path, rw)
 	if r.PanicHandler != nil {
 		defer r.recv(w, req)
 	}
